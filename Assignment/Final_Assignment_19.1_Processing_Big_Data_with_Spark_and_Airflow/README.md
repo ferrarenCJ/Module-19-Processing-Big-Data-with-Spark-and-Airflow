@@ -1,564 +1,419 @@
-# Final*Assignment 19.1: Processing Big Da*a with Spark and Airflow
+# Final Assignment 19.1: Processing Big Data with Spark and Airflow
 
-## Modul* 19: Processing Big Data with Spar* and Airflow
+## Module 19: Processing Big Data with Spark and Airflow
 
 ---
 
 # Objective
 
-Th*s assignment demonstrates the abil*ty to:
+This assignment demonstrates the ability to:
 
-- Use Docker to create and*manage Spark containers
-- Load and*query data using PySpark
-- Execute*SQL queries against Spark DataFram*s
-- Create and execute Airflow wor*flows
-- Build and run DAGs using P*thonOperator
+- Use Docker to create and manage Spark containers
+- Load and query data using PySpark
+- Execute SQL queries against Spark DataFrames
+- Create and execute Airflow workflows
+- Build and run DAGs using PythonOperator
 
-The assignment consi*ts of two major sections:
+The assignment consists of two major sections:
 
-1. Part*1: PySpark
+1. Part 1: PySpark
 2. Part 2: Airflow
 
----*
+---
+
 # Technologies Used
 
-## Big Data *rocessing
+## Big Data Processing
 
 - Apache Spark
-- PySpar*
+- PySpark
 
 ## Workflow Orchestration
 
-- Apa*he Airflow
+- Apache Airflow
 
 ## Containerization
 
--*Docker
+- Docker
 - Docker Compose
 
-## Develo*ment Environment
+## Development Environment
 
-- Visual Studio *ode
+- Visual Studio Code
 - Windows Command Prompt
-
----
-*# Project Structure
-
-```text
-Final*Assignment_19.1_Processing_Big_Dat*_with_Spark_and_Airflow
-│
-├── airf*ow_assignment
-│   ├── dags
-│   │  *└── module19_assignment.py
-│   ├──*logs
-│   ├── plugins
-│   └── docke*-compose.yaml
-│
-├── bitnami
-│   └─* docker-compose.yml
-│
-├── Code
-│  *├── airflow_dag_reference.py
-│   └*─ pyspark_queries.py
-│
-├── Data
-│ * └── departuredelays.csv
-│
-├── Doc*ment
-├── Screenshots
-└── README.md*```
 
 ---
 
 # Part 1: PySpark
 
-## St*p 1: Download Spark Docker Compose*File
+## Step 1: Download Spark Docker Compose File
 
-Downloaded the Bitnami Spark*Docker Compose configuration file.*
+Downloaded the Bitnami Spark Docker Compose configuration file.
+
 ### Screenshot
 
 ```text
-Step01_Do*nload_Docker_Compose.png
+Step01_Download_Docker_Compose.png
 ```
 
 ---
-*## Step 2: Start Spark Containers
-*Started the Spark environment usin* Docker Compose.
+
+## Step 2: Start Spark Containers
+
+Started the Spark environment using Docker Compose.
 
 ### Containers
 
-*``text
+```text
 bitnami_spark_1
-bitnami_spa*k-worker-1
+bitnami_spark-worker-1
 ```
 
 ### Screenshot
 
-``*text
-Step02_Containers_Running.png*```
+```text
+Step02_Containers_Running.png
+```
 
 ---
 
-## Step 3: Copy Dataset *nto Spark Container
+## Step 3: Copy Dataset into Spark Container
 
-Copied the fl*ght delay dataset into the Spark c*ntainer.
+Copied the flight delay dataset into the Spark container.
 
 ### Dataset
 
 ```text
-dep*rturedelays.csv
+departuredelays.csv
 ```
 
-### Screensho*
+### Screenshot
 
 ```text
-Step03_DepartureDelays_C*pied.png
+Step03_DepartureDelays_Copied.png
 ```
 
 ---
 
-## Step 4: Open*PySpark
+## Step 4: Open PySpark
 
-Opened the Spark containe* and launched PySpark.
+Opened the Spark container and launched PySpark.
 
-### Screen*hot
+### Screenshot
 
 ```text
-Step04_Open_PySpark.p*g
+Step04_Open_PySpark.png
 ```
 
 ---
 
-## Step 5: Import Spar*Session
+## Step 5: Import SparkSession
 
 Imported SparkSession.
 
-#*# Code
-
-```python
-from pyspark.sql*import SparkSession
-```
-
-### Scree*shot
-
-```text
-Step05_Start_PySpark*Session.png
-```
-
----
-
-## Step 6: C*eate Spark Session
-
-Created a Spar* session named Assignment19.3.
-
-##* Code
-
-```python
-spark = SparkSess*on.builder \
-    .appName("Assignm*nt19.3") \
-    .getOrCreate()
-```
-*### Screenshot
-
-```text
-Step06_Cre*te_Spark_Session.png
-```
-
----
-
-## *tep 7: Define Data Variable
-
-Creat*d a variable that stores the CSV f*le path.
-
 ### Code
 
 ```python
-assi*nment19_3_data = "/departuredelays*csv"
+from pyspark.sql import SparkSession
 ```
 
 ### Screenshot
 
 ```text
-*tep07_Define_Data_Variable.png
-```*
+Step05_Start_PySpark_Session.png
+```
+
+---
+
+## Step 6: Create Spark Session
+
+Created a Spark session named Assignment19.3.
+
+### Code
+
+```python
+spark = SparkSession.builder \
+    .appName("Assignment19.3") \
+    .getOrCreate()
+```
+
+### Screenshot
+
+```text
+Step06_Create_Spark_Session.png
+```
+
+---
+
+## Step 7: Define Data Variable
+
+Created a variable that stores the CSV file path.
+
+### Code
+
+```python
+assignment19_3_data = "/departuredelays.csv"
+```
+
+### Screenshot
+
+```text
+Step07_Define_Data_Variable.png
+```
+
 ---
 
 ## Step 8: Create DataFrame
-*Loaded the CSV file into a Spark D*taFrame.
+
+Loaded the CSV file into a Spark DataFrame.
 
 ### Code
 
 ```python
-df =*spark.read.format("csv") \
-    .op*ion("inferSchema", "true") \
-    .*ption("header", "true") \
-    .loa*(assignment19_3_data)
+df = spark.read.format("csv") \
+    .option("inferSchema", "true") \
+    .option("header", "true") \
+    .load(assignment19_3_data)
 ```
 
-### Scr*enshot
+### Screenshot
 
 ```text
-Step08_Create_Data*rame.png
+Step08_Create_DataFrame.png
 ```
 
 ---
 
-## Step 9: Crea*e Temporary View
+## Step 9: Create Temporary View
 
-Created a tempor*ry SQL view from the DataFrame.
+Created a temporary SQL view from the DataFrame.
 
-#*# Code
+### Code
 
 ```python
-df.createOrRepla*eTempView("assignment19_3_table")
-*``
+df.createOrReplaceTempView("assignment19_3_table")
+```
 
 ### Screenshot
 
 ```text
-Step09*Create_Temp_View.png
+Step09_Create_Temp_View.png
 ```
 
 ---
 
-## *tep 10: Query Flights from PHL to *FW
+## Step 10: Query Flights from PHL to DFW
 
-Retrieved the first 15 flights*from PHL to DFW with delays greate* than 150 minutes.
-
-### Query
-
-```*ql
-SELECT *
-FROM assignment19_3_ta*le
-WHERE origin = 'PHL'
-  AND dest*nation = 'DFW'
-  AND delay > 150
-L*MIT 15
-```
+Retrieved the first 15 flights from PHL to DFW with delays greater than 150 minutes.
 
 ### Screenshot
 
-```tex*
-Step10_PHL_DFW_Delay_Over_150.png*```
+```text
+Step10_PHL_DFW_Delay_Over_150.png
+```
 
 ---
 
-## Step 11: Query Flight* Less Than 200 Miles
+## Step 11: Query Flights Less Than 200 Miles
 
-Retrieved th* first 10 flights with a distance *ess than 200 miles.
-
-### Query
-
-``*sql
-SELECT *
-FROM assignment19_3_t*ble
-WHERE distance < 200
-LIMIT 10
-*``
+Retrieved the first 10 flights with a distance less than 200 miles.
 
 ### Screenshot
 
 ```text
-Step11*Distance_Less_Than_200.png
+Step11_Distance_Less_Than_200.png
 ```
 
---*
+---
 
-## Step 12: Query Flights Greate* Than 600 Miles
+## Step 12: Query Flights Greater Than 600 Miles
 
-Retrieved the fir*t 10 flights with a distance great*r than 600 miles.
-
-### Query
-
-```s*l
-SELECT *
-FROM assignment19_3_tab*e
-WHERE distance > 600
-LIMIT 10
-``*
+Retrieved the first 10 flights with a distance greater than 600 miles.
 
 ### Screenshot
 
 ```text
-Step12_D*stance_Greater_Than_600.png
+Step12_Distance_Greater_Than_600.png
 ```
 
--*-
-
-# Part 1 Summary
-
-The Spark env*ronment was successfully deployed *sing Docker. The flight delay data*et was loaded into PySpark, conver*ed into a DataFrame, exposed as a *emporary SQL view, and queried usi*g Spark SQL.
-
-Skills demonstrated:*
-- Docker container management
-- S*ark session creation
-- DataFrame c*eation
-- Temporary SQL views
-- Spa*k SQL queries
-- Big data analysis
-*---
+---
 
 # Part 2: Airflow
 
-## Step 1:*Download Airflow Docker Compose Fi*e
+## Step 1: Download Airflow Docker Compose File
 
-Downloaded the Airflow Docker C*mpose configuration file.
-
-### Scr*enshot
+### Screenshot
 
 ```text
-Step01_Download_Ai*flow_File.png
+Step01_Download_Airflow_File.png
 ```
 
 ---
 
-## Step 2:*Configure Airflow
+## Step 2: Configure Airflow
 
-Modified:
+Updated:
 
-```y*ml
-AIRFLOW__CORE__LOAD_EXAMPLES: '*alse'
+```yaml
+AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
 ```
 
-and updated the webserv*r port to:
+and changed:
 
 ```yaml
 8081:8080
 ```
-*### Screenshot
 
-```text
-Step02_Loa*_Examples_False.png
-```
-
----
-
-## S*ep 3: Start Airflow
-
-Started the A*rflow environment using Docker Com*ose.
+to avoid a local port conflict.
 
 ### Screenshot
 
 ```text
-Step*3_Airflow_Containers_Running.png
-`*`
+Step02_Load_Examples_False.png
+```
 
 ---
 
-## Step 4: Log Into Airflo*
-
-Successfully logged into Airflow*
-
-### URL
-
-```text
-http://localhos*:8081
-```
+## Step 3: Start Airflow Containers
 
 ### Screenshot
 
-```text*Step04_Airflow_Login_Successful.pn*
+```text
+Step03_Airflow_Containers_Running.png
 ```
 
 ---
 
-## Step 5: Create DAG F*le
+## Step 4: Log Into Airflow
+
+### Screenshot
+
+```text
+Step04_Airflow_Login_Successful.png
+```
+
+---
+
+## Step 5: Create DAG File
 
 Created:
 
 ```text
-module19_ass*gnment.py
+module19_assignment.py
 ```
-
-inside the Airflow *AG folder.
-
-### Screenshot
-
-```tex*
-Step05_Create_Module19_Assignment*File.png
-```
-
----
-
-## Step 6: Impo*t Required Libraries
-
-### Code
-
-``*python
-from datetime import timede*ta, datetime
-from airflow import D*G
-from airflow.operators.python_op*rator import PythonOperator
-from a*rflow.utils.dates import days_ago
-*``
 
 ### Screenshot
 
 ```text
-Step06*Import_Libraries.png
+Step05_Create_Module19_Assignment_File.png
 ```
 
 ---
 
-## *tep 7: Define Default Arguments
-
-#*# Code
-
-```python
-default_args = {*    'owner': 'Ferraren',
-    'depe*ds_on_past': False,
-    'start_dat*': days_ago(2),
-    'email': ['fer*arecliff@gmail.com'],
-    'email_o*_failure': False,
-    'email_on_re*ry': False,
-    'retries': 1,
-}
-``*
+## Step 6: Import Required Libraries
 
 ### Screenshot
 
 ```text
-Step07_D*fine_Default_Args.png
+Step06_Import_Libraries.png
 ```
 
 ---
 
-##*Step 8: Define square Function
-
-##* Code
-
-```python
-def square(x):
-  * return x * x
-```
+## Step 7: Define Default Arguments
 
 ### Screenshot
-*```text
-Step08_Define_Square_Funct*on.png
+
+```text
+Step07_Define_Default_Args.png
 ```
 
 ---
 
-## Step 9: Define*DAG Object
-
-### Code
-
-```python
-da* = DAG(
-    'python_square_operato*',
-    description='Squaring a num*er using Airflow',
-    schedule_in*erval='0 12 * * *',
-    start_date*datetime(2017, 3, 20),
-    catchup*False
-)
-```
+## Step 8: Define square Function
 
 ### Screenshot
 
-```te*t
+```text
+Step08_Define_Square_Function.png
+```
+
+---
+
+## Step 9: Define DAG Object
+
+### Screenshot
+
+```text
 Step09_Define_DAG_Object.png
-```*
+```
+
 ---
 
 ## Step 10: Define Task
 
-###*Code
-
-```python
-t1 = PythonOperato*(
-    task_id='square',
-    python*callable=square,
-    op_kwargs={'x*: 13},
-    dag=dag,
-)
-
-t1
-```
-
-###*Screenshot
+### Screenshot
 
 ```text
-Step10_Define_*ask.png
+Step10_Define_Task.png
 ```
 
 ---
 
-## Step 11: Veri*y DAG Configuration
+## Step 11: Verify DAG Configuration
 
-Verified that*the DAG appeared in the Airflow in*erface.
-
-### DAG Name
+### Screenshot
 
 ```text
-pyt*on_square_operator
-```
-
-### Screen*hot
-
-```text
-Step11_DAG_Configured*png
+Step11_DAG_Configured.png
 ```
 
 ---
 
-## Step 12: Execute *he DAG
+## Step 12: Execute the DAG
 
-Executed the workflow and *eviewed the logs.
-
-### Expected Ca*culation
+Expected result:
 
 ```text
 13 × 13 = 169
-``*
-
-### Successful Log Messages
-
-```*ext
-Done. Returned value was: 169
-*``
-
-```text
-Marking task as SUCCES*
-```
-
-```text
-Task exited with ret*rn code 0
 ```
 
 ### Screenshot
 
-```*ext
+```text
 Step12_DAG_Log_Successful.png
 ```
 
 ---
 
-# Key Skills Demonstrated
+# Lessons Learned
 
-- Docker container deployment
-- Apache Spark configuration
-- PySpark DataFrames
-- Spark SQL querying
-- Apache Airflow configuration
-- DAG creation
-- PythonOperator implementation
-- Workflow orchestration
-- Workflow monitoring and logging
+Through this assignment I learned how to:
+
+- Deploy Spark using Docker
+- Work with PySpark DataFrames
+- Query large datasets using Spark SQL
+- Create temporary SQL views
+- Deploy Airflow using Docker Compose
+- Create DAGs using Python
+- Execute and monitor workflows
+- Review Airflow task logs
 
 ---
 
 # Key Takeaways
 
-- Spark provides scalable distributed data processing.
-- PySpark enables SQL-based big data analysis.
-- Airflow provides workflow automation and orchestration.
-- Docker simplifies environment setup and deployment.
+- Apache Spark provides scalable distributed data processing.
+- PySpark enables SQL-based analysis of large datasets.
+- Apache Airflow orchestrates and automates workflows.
+- Docker simplifies deployment and environment management.
 - Spark and Airflow work together to support modern data engineering pipelines.
 
 ---
 
 # Conclusion
 
-This assignment successfully demonstrated both large-scale data processing with Apache Spark and workflow orchestration with Apache Airflow. Flight delay data was analyzed using PySpark and Spark SQL, while a custom Airflow DAG was created, deployed, and executed successfully. Together, these activities reinforced key concepts in modern data engineering, including distributed processing, workflow automation, containerization, and monitoring.
+This assignment demonstrated both distributed data processing with Apache Spark and workflow orchestration with Apache Airflow. Flight delay data was analyzed using PySpark and Spark SQL, while a custom Airflow DAG was created, deployed, and executed successfully. Together, these technologies provide a foundation for building scalable and automated data engineering solutions.
 
 ---
 
