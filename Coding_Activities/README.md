@@ -2,43 +2,39 @@
 
 ## Processing Big Data with Spark and Airflow
 
-This folder contains the coding activities completed for Module 19. The activities focused on deploying and using Apache Spark for distributed data processing and Apache Airflow for workflow orchestration.
+This folder contains the coding activities completed during Module 19. These activities introduced Apache Spark for distributed data processing and Apache Airflow for workflow orchestration and automation.
 
 ---
 
 # Learning Objectives
 
-The coding activities provided hands-on experience with:
+The coding activities focused on developing practical skills in:
 
-- Creating and managing Docker containers
-- Deploying Apache Spark
-- Using PySpark to process and query data
-- Working with Spark DataFrames
-- Executing Spark SQL queries
-- Deploying Apache Airflow
-- Creating Directed Acyclic Graphs (DAGs)
-- Scheduling and monitoring workflows
-- Executing Python-based Airflow tasks
+- Deploying Spark with Docker
+- Using PySpark to process large datasets
+- Creating Spark DataFrames
+- Querying data with Spark SQL
+- Deploying Airflow with Docker
+- Creating and running DAGs
+- Using PythonOperator tasks
+- Monitoring workflow execution through Airflow
 
 ---
 
-# Coding Activity Overview
+# Coding Activity 19.1: Spark Docker Environment Setup
 
-## Coding Activity 19.1: Spark Docker Environment Setup
+## Objective
 
-### Purpose
+Deploy a Spark environment using Docker containers.
 
-Introduce the Spark Docker environment using Bitnami containers.
+## Skills Practiced
 
-### Skills Practiced
+- Docker Compose
+- Container management
+- Spark container deployment
+- Container accessibility verification
 
-- Downloading Docker Compose files
-- Starting Spark containers
-- Managing Docker services
-- Accessing Spark containers
-- Verifying container health
-
-### Commands Used
+## Key Commands
 
 ```bash
 docker compose up
@@ -52,29 +48,28 @@ docker ps
 docker exec -it bitnami_spark_1 bash
 ```
 
-### Outcomes
+## Results
 
-- Successfully deployed a Spark environment
-- Verified Spark services were running
-- Connected to the Spark container
+- Created Spark Master container
+- Created Spark Worker container
+- Verified the Spark environment was operational
 
 ---
 
-## Coding Activity 19.2: Working with PySpark
+# Coding Activity 19.2: PySpark Fundamentals
 
-### Purpose
+## Objective
 
-Learn how to start and use PySpark.
+Learn how to use PySpark within the Spark environment.
 
-### Skills Practiced
+## Skills Practiced
 
 - Launching PySpark
-- Creating Spark sessions
-- Loading CSV files
+- Creating Spark Sessions
+- Loading datasets
 - Creating DataFrames
-- Displaying data
 
-### Commands Used
+## Key Commands
 
 ```python
 from pyspark.sql import SparkSession
@@ -86,38 +81,41 @@ spark = SparkSession.builder \
     .getOrCreate()
 ```
 
-### Outcomes
+## Results
 
+- Successfully launched PySpark
 - Created Spark sessions
-- Loaded structured data
-- Worked with Spark DataFrames
+- Loaded structured datasets
+- Created DataFrames for analysis
 
 ---
 
-## Coding Activity 19.3: Spark SQL Data Analysis
+# Coding Activity 19.3: Spark SQL Queries
 
-### Purpose
+## Objective
 
-Analyze flight delay data with Spark SQL.
+Use Spark SQL to analyze flight delay data.
 
-### Dataset
+## Dataset
 
 ```text
 departuredelays.csv
 ```
 
-### Skills Practiced
+## Skills Practiced
 
 - Creating temporary views
-- Executing SQL queries
+- Writing Spark SQL queries
 - Filtering records
-- Retrieving subsets of data
+- Analyzing structured data
 
-### Commands Used
+## Create Temporary View
 
 ```python
 df.createOrReplaceTempView("flight_delays")
 ```
+
+## Example Query
 
 ```python
 spark.sql("""
@@ -127,30 +125,29 @@ LIMIT 10
 """).show()
 ```
 
-### Outcomes
+## Results
 
 - Queried large datasets
-- Used SQL with Spark DataFrames
-- Applied filtering conditions
-- Retrieved analytical results
+- Applied SQL filters
+- Retrieved analytical results using Spark SQL
 
 ---
 
-## Coding Activity 19.4: Apache Airflow Fundamentals
+# Coding Activity 19.4: Apache Airflow Fundamentals
 
-### Purpose
+## Objective
 
-Learn workflow orchestration using Apache Airflow.
+Create and execute workflows using Apache Airflow.
 
-### Skills Practiced
+## Skills Practiced
 
 - Deploying Airflow with Docker
-- Accessing the Airflow UI
 - Creating DAG files
-- Building PythonOperator tasks
-- Monitoring workflow execution
+- Using PythonOperator
+- Running DAGs
+- Monitoring execution logs
 
-### Core Components
+## Components Used
 
 - DAG
 - Task
@@ -158,24 +155,16 @@ Learn workflow orchestration using Apache Airflow.
 - Scheduler
 - Webserver
 
-### Outcomes
+## Results
 
-- Built a working DAG
-- Executed workflows
-- Viewed logs
-- Monitored execution status
-
----
-
-# Spark Environment Commands
-
-## Start Spark
-
-```bash
-docker compose up
-```
+- Created a working DAG
+- Executed workflow tasks
+- Reviewed execution logs
+- Verified successful task completion
 
 ---
+
+# Spark Reference Commands
 
 ## Open Spark Container
 
@@ -183,78 +172,40 @@ docker compose up
 docker exec -it bitnami_spark_1 bash
 ```
 
----
-
-## Launch PySpark
+## Start PySpark
 
 ```bash
 /opt/spark/bin/pyspark
 ```
 
----
-
-## Import SparkSession
-
-```python
-from pyspark.sql import SparkSession
-```
-
----
-
 ## Create Spark Session
 
 ```python
 spark = SparkSession.builder \
-    .appName("Module19") \
+    .appName("Module19")
     .getOrCreate()
 ```
 
----
-
-# Working with DataFrames
-
-## Define Data Path
-
-```python
-data_file = "/departuredelays.csv"
-```
-
----
-
-## Load CSV Data
+## Load CSV File
 
 ```python
 df = spark.read.format("csv") \
     .option("header", "true") \
     .option("inferSchema", "true") \
-    .load(data_file)
+    .load("/departuredelays.csv")
 ```
 
----
-
-## Display Data
+## Display Records
 
 ```python
 df.show()
 ```
-
----
-
-## Display First Five Records
-
-```python
-df.show(5)
-```
-
----
 
 ## Display Schema
 
 ```python
 df.printSchema()
 ```
-
----
 
 ## Count Records
 
@@ -264,7 +215,7 @@ df.count()
 
 ---
 
-# Spark SQL Commands
+# Spark SQL Reference
 
 ## Create Temporary View
 
@@ -272,9 +223,7 @@ df.count()
 df.createOrReplaceTempView("flight_delays")
 ```
 
----
-
-## Run a SQL Query
+## Query Data
 
 ```python
 spark.sql("""
@@ -284,258 +233,249 @@ LIMIT 10
 """).show()
 ```
 
----
-
-## Count Records Using SQL
+## Count Records
 
 ```python
 spark.sql("""
 SELECT COUNT(*)
 FROM flight_delays
-""").*how()
+""").*how*)
 ```
 
-*--
+---
 
-# Sample Queries
+# Sample Module 19 Que*ies
 
-## Flights*from PHL to DFW with Delays Greate* Than 150 Minutes
+## Flights*from PHL to DFW with Delays*Greater Than 150 Minutes
 
-```python*spark.sql("""
-SELECT *
-FROM assign*ent*9_3_table
-WHERE origin*= 'PHL'
-* AND destination = 'DFW'
-  AND del*y > 150
-LIMIT 15
-""").show()
-```
-
-*--
-
-## Flights with Distance Less *han 200 Miles
-
-```python*spark.sql("""
-SELECT *
-FROM assign*ent19_3_table
-WHERE distance < 200*LIMIT 10
-""").show()
-```
-
-*--
-
-## Flights*with Distance Greater Than 600 Mil*s
-
-```python
+```pytho*
 spark.sql("""
 SELECT *
-FROM assignment19_3_table
-WHERE d*stance > 600
-LIMIT 10
-*"").show()
+FROM assig*ment19_3_table
+WHERE origin = 'PHL*
+  AND*destination = 'DFW'
+  AND delay > *50
+LIMIT *5
+""").show()
 ```
 
-*--
+*# Flights Less Than 200 Miles
 
-# Airflow Environment
+```*ython**park.sql("""
+SELECT *
+FROM assignm*nt*9_3_table
+WHERE distance < 200
+LIM*T 10
+""").show()
+```
 
-## Down*oad Airflow Configuration
+## Flights G*eater Than 600 Miles
+
+```python
+sp*rk.sql("""
+SELECT *
+FROM assignmen*19_3_table
+WHERE distance > 600
+LI*IT 10
+""").show()
+```
+
+---
+
+# Airf*ow Environment
+
+## Download Config*ration
 
 ```bash*curl "https://airflow.apache.org/docs/apache-airflow/2.1.1/docker-compose.yaml" -o docker-compose.yaml
 `*`
 
----
-
 ## Start Airflow
 
 ```bash
-*ocker compose up
+docke* compose up
 ```
 
----
-
-## Airf*ow Login Credentials
+## Login Credenti*ls
 
 ```text
-*sername: airflow
-Password: airflow*```
-
----
-
-## Airflow URL
-
-```text
-*ttp://localhost:8080
+Username: airflow
+Pass*ord: airflow
 ```
 
+## Web Interface*
+```text
+http://localhost:8080
+```*
 or
 
-```t*xt*http://localhost:8081
+```text*http://localhost:8081
 ```
 
-for cus*om port mappings.
+*f a custom port mapping is configu*ed.
 
 ---
 
-# Basic Ai*flow DAG Example
+# Basic DAG Example
+
+```*ython
+from airflow import DAG
+from*datetime import datetime
+
+dag = DA*(
+    "*xample_dag",
+    description="Exam*le Workflow",
+    start*date=datetime(2024, 1, 1),
+    cat*hup=False
+)
+```
+
+---
+
+# PythonOper*tor Example
+
+```python*from airflow.operators.python_oper*tor import PythonOperator
+```
+
+*``python
+*ef hello_world():
+    print("Hello*World")
+```
 
 ```python
-from a*rflow import DAG
-from datetime imp*rt datetime
-
-dag = DAG(
-    'examp*e_dag',
-    description='Example W*rkflow',
-    start*date=datetime(2024* 1, 1),
-*   catchup=False
+task = Pyth*nOperator(
+    task_id="hello_worl*",
+    python_callable=hello_world*
+    dag=dag,
 )
 ```
 
 *--
 
-# PythonOperator Example
+# Workflow Execution Steps
 
-```p*thon
-from airflow.operators.python*operator import PythonOperator
-```*
-```python
-def hello_world():
-    *rint("Hello World")
-```
-
-```python*task = PythonOperator(
-    task_id*'hello_world',
-    python*callable=hello_world,
-    dag=dag
-*
-```
+1.*Enable the DAG.
+2. Trigger the DAG*
+3. Monitor task execution.
+4. Rev*ew logs.
+5. Verify successful comp*etion.
 
 ---
 
-# Airflow Workflow Exec*tion
+# Successful Executio* Indicators
 
-## Steps*
-1.*Enable the DAG*
-2.*Trigger the DAG.
-3. Monitor task e*ecution.
-4. Review logs.
-5. Verify*successful completion.
+```text
+Marking task *s SUCCESS
+```
 
----
-
-* Successful Execution Indicators
+```text
+Task exited*with return code 0
+```
 
 *``text
-Marking task as SUCCESS
-``*
-
-```text
-Task exited with return *ode 0
+Done. Returned value was: 1*9
 ```
 
-*``text*Done. Returned value was: 169
-```
-*---
+---
 
-# Typical Data Engineering Wo*kflow
+# Typical Data Enginee*ing Workflow
 
-```text
-Source Data
-    *│
-     ▼
-Spark*Processing
-     │
-    *▼
+```text*Source Data
+    |
+    v
+Spark*Processing*    |
+    v
 Data Transformation
-     │
-*    ▼
-Air*low Workflow
-     │
-     ▼
-Monitor*ng and Automation
-     │
-    *▼
-Reporting and*Analytics*```
+  * |
+    v
+Airflow Workflow
+    |
+  * v
+Monitoring and Automation
+    |*    v*Reporting and Analytics
+```
 
 ---
 
-# Key Concepts Learned
+* Key Concepts Learned
 
-*# Apache Spark
+## Apache S*ark
 
-Primary Uses*
+Used For:
 
-* Distributed computing
-- Data tran*formation
-- Large-scale analytics
-* SQL processing
-
-### Advantages
-
--*High performance
--*Scal*bility
-- Fault tolerance
-- Multi-l*nguage support
-
----
-
-## Apache Air*low
-
-Primary Uses:
-
-- Workflow aut*mation
-- Scheduling
-- Monitoring
--*Dependency management
+- Distributed comp*ting
+- Data transformation
+- SQL a*alytics
+- Large*scale data processing
 
 ### Advanta*es
 
+- High performance
+- Scalabili*y
+- Fault tolerance
+- Multi-langua*e support
+
+---
+
+## Apache Airflow
+*Used For:
+
+- Workflow automation
+* Scheduling
+- Monitoring
+- Depende*cy management
+
+### Advantages
+
+- A*tomation
 - Workflow visibility
-- Automa*ion
-- Reliability
+- R*liability
 - Extensibility
-*---
-
-# Practical Skills Developed
-*During these coding activities I l*arned how to:
-
-- Deploy Spark usin* Docker
-- Launch and manage PySpar* sessions
-- Create Spark DataFrame*
-- Query data using Spark SQL
-- De*loy Airflow services
-- Create DAGs*- Implement PythonOperator tasks
--*Execute workflows
-- Review Airflow*logs
-- Troubleshoot containerized *nvironments
 
 ---
 
-# Real-World App*ications
+# *ractical Skills Developed
 
-The skills practiced in *hese activities are commonly used *n:
+Through*these coding activities I learned *ow to:
 
-- ETL pipelines
-- Data warehou*ing
-- Business intelligence
-- Clou* data platforms
-- Machine learning*pipelines
+- Deploy Spark using Docke*
+- Launch and manage PySpark sessi*ns
+- Create Spark DataFrames
+- Que*y data using Spark SQL
+- Deploy Ai*flow services
+- Create DAGs
+- Impl*ment PythonOperator tasks
+- Execut* workflows
+- Review Airflow logs
+-*Troubleshoot containerized environ*ents
+
+---
+
+# Real-World Applicatio*s
+
+The techniques practiced in thi* module are commonly used in:
+
+- E*L pipelines
+- Data warehousing
+- B*siness intelligence
+- Cloud data p*atforms
+- Machine*learning pipelines
+- Workflow auto*ation
 - Streaming analytics
-- *orkflow automation
-- Enterprise da*a engineering
+- Ente*prise data engineering
 
 ---
 
-# Key Takeaway*
+# Key*Takeaways
 
-- Spark processes large volumes *f data efficiently using distribut*d computing.
-- Airflow orchestrate* and automates workflow execution.*- Docker simplifies deployment and*environment management.
-- DataFram*s are the primary Spark data struc*ure.
-- DAGs are the foundation of *irflow workflows.
-- Spark and Airf*ow are commonly used together in p*oduction data pipelines.
+- Spark provides fast d*stributed data processing.
+- PySpa*k enables large-scale analytics us*ng Python.
+- Spark*SQL allows SQL queries against Dat*Frames.
+- Air*low automates and orchestrates wor*flows.
+- Docker simplifies deploym*nt and configuration.
+- Spark*and Airflow are commonly used toge*her in modern data engineering arc*itectures.
 
 ---
 
-# M*dule 19 Summary
+# Module 19 Summa*y
 
-The coding activi*ies in Module 19 provided hands-on*experience with Apache Spark and A*ache Airflow. Spark was used to pr*cess and analyze structured data u*ing PySpark and Spark SQL, while A*rflow was used to create, automate* and monitor workflows through DAG* and Operators. Together, these te*hnologies demonstrate how modern d*ta engineering platforms process l*rge datasets and automate complex *ata pipelines in scalable environm*nts.
+Module 19 provided hands-on exp*rience with Apache Spark and Apach* Airflow. Spark was used to proces* and analyze structured data using*PySpark and Spark SQL. Airflow was*used to create, schedule, execute,*and monitor workflows through DAGs*and Operators. Together, these tec*nologies demonstrated how modern d*ta engineering solutions process l*rge datasets and automate complex *orkflows in scalable environments.*
